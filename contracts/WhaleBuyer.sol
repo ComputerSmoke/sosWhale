@@ -34,11 +34,11 @@ contract WhaleBuyer is IWhaleBuyer {
      * max exchange rate is a sqrt(sos/eth) Q64.96 value. 
      * Cost should be obtained with an offchain call to exchangeRate to prevent frontrunning. 
      */
-    function buy(uint256 _cost, uint256 _mintNum) external {
+    function buy(uint256 _cost, uint256 _mintNum) external override {
         //Get the SOS to buy with
         sos.safeTransferFrom(msg.sender, address(this), _cost);
         //Convert it to WETH
-        (int256 amount0, int256 amount1) = sosPool.swap(
+        sosPool.swap(
             address(this), 
             true, 
             -0.5 ether,
@@ -59,7 +59,7 @@ contract WhaleBuyer is IWhaleBuyer {
     /**
      * Get the price of a mint with 2% slippage tolerance.
      */
-    function getCost() external view returns (uint256) {
+    function getCost() external override view returns (uint256) {
         (uint160 price,,,,,,) = sosPool.slot0();
         return (uint256(price**2) * uint256(.5 ether)) / uint256(10 * 94) * 102 / 100;
     }
