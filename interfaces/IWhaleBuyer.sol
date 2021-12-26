@@ -6,7 +6,7 @@ interface IWhaleBuyer {
      * Buy _num WHALE with $SOS using specified _maxExchangeRate to mitigate frontrunning.
      * max exchange rate is a sqrt(sos/eth) Q64.96 value.
      */
-    function buy(uint256 _cost, uint256 _num) external;
+    function buy(uint256 _cost, uint256 _num, uint256 _deadline) external;
     /**
      * Get the current price of the sos pool as a sqrt(sos/eth) Q64.96 value.
      */
