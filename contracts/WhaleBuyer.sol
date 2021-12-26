@@ -3,7 +3,6 @@ pragma solidity ^0.8.4;
 
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol';
-import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol';
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../interfaces/IWhaleBuyer.sol";
@@ -21,9 +20,8 @@ contract WhaleBuyer is IWhaleBuyer {
     //NFT Contract
     IWhaleMaker immutable whaleMaker;
     //Parameterized nft, sos, and weth addresses.
-    constructor(address _whaleMaker, address _sos, address _weth) {
-        IUniswapV3Factory factory = IUniswapV3Factory(0x1F98431c8aD98523631AE4a59f267346ea31F984);
-        sosPool = IUniswapV3Pool(factory.getPool(_sos, _weth, 10000));
+    constructor(address _pool, address _whaleMaker, address _sos, address _weth) {
+        sosPool = IUniswapV3Pool(_pool);
         sos = IERC20(_sos);
         weth = IWETH(_weth);
         whaleMaker = IWhaleMaker(_whaleMaker);
@@ -41,15 +39,15 @@ contract WhaleBuyer is IWhaleBuyer {
         sosPool.swap(
             address(this), 
             true, 
-            -0.5 ether,
+            -0.01 ether,
             0x00ffffffffffffffffffffffffffffffffffffffff,//do not limit price, we check after that we are able to mint.
             ""
         );
         //Convert the WETH to ETH
-        weth.withdraw(0.5 ether);
+        weth.withdraw(0.01 ether);
         //Buy the NFT
         uint id = whaleMaker.totalSupply()+1;
-        whaleMaker.buy{value: 0.5 ether}(_mintNum);
+        whaleMaker.buy{value: 0.01 ether}(_mintNum);
         //Transfer the NFT to buyer
         whaleMaker.safeTransferFrom(address(this), msg.sender, id);
         //Refund dust SOS
@@ -61,6 +59,6 @@ contract WhaleBuyer is IWhaleBuyer {
      */
     function getCost() external override view returns (uint256) {
         (uint160 price,,,,,,) = sosPool.slot0();
-        return (uint256(price**2) * uint256(.5 ether)) / uint256(10 * 94) * 102 / 100;
+        return (0.5 ether * uint256(price) ** 2) / 2 ** 192;
     }
 }

@@ -9,15 +9,25 @@ let config = JSON.parse(fs.readFileSync("./params", "UTF-8"));
  */
 module.exports = {
   solidity: {
-    version: "0.8.4"
+    version: "0.8.4",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 100
+      }
+    }
   },
   networks: {
     hardhat: {
       chainId: 1337
     },
     ropsten: {
-      url: "https://ropsten.infura.io/v3/"+config.INFURA_ID,
+      url: ""+config.ROPSTEN_ID,
       accounts: [config.ACCOUNT]
-    }
+    },
+    matic: {
+      url: ""+config.MATIC_ID,
+      accounts: [config.ACCOUNT]
+    },
   }
 };

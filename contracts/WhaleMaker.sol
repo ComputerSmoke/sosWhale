@@ -12,7 +12,7 @@ contract WhaleMaker is ERC721Enumerable, Ownable {
     uint256 public constant WHALE_PUBLIC = 948;
     uint256 public constant WHALE_MAX = WHALE_AIRDROP + WHALE_PUBLIC;
     uint256 public constant WHALE_MAX_TX = 2;
-    uint256 public constant MINT_PRICE = 0.5 ether;
+    uint256 public constant MINT_PRICE = 0.01 ether;
     
     uint256 public airdropCounter;
     uint256 public publicSaleCounter;
