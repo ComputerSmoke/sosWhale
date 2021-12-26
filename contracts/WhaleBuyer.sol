@@ -63,11 +63,11 @@ contract WhaleBuyer is IWhaleBuyer,ERC721Holder {
         if(dust > 0) sos.safeTransfer(msg.sender, dust);
     }
     /**
-     * Get the price of a mint with 10% slippage tolerance.
+     * Get the price of a mint with 5% slippage tolerance.
      */
     function getCost() external override view returns (uint256) {
         (uint160 price,,,,,,) = sosPool.slot0();
-        return ((110 * 0.5 ether * uint256(price) ** 2) / 2 ** 192) / 100;
+        return ((105 * 0.5 ether * uint256(price) ** 2) / 2 ** 192) / 100;
     }
     fallback() external payable{
         
