@@ -13,7 +13,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 100
+        runs: 200
       }
     }
   },
@@ -29,5 +29,9 @@ module.exports = {
       url: ""+config.MATIC_ID,
       accounts: [config.ACCOUNT]
     },
+    etherium: {
+      url: ""+config.ETH_ID,
+      accounts: [config.ACCOUNT]
+    }
   }
 };
